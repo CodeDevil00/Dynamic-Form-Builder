@@ -2,9 +2,10 @@ import React from 'react';
 
 function FormField({ field, value, onChange }) {
   const inputBaseClass =
-    "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
+    "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition mb-4";
 
-  const labelGroupClass = "flex flex-col gap-2";
+  const checkboxRadioLabelClass =
+    "inline-flex items-center gap-2 text-gray-700 cursor-pointer mb-2";
 
   switch (field.type) {
     case 'text':
@@ -20,7 +21,7 @@ function FormField({ field, value, onChange }) {
           minLength={field.minLength}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className={inputBaseClass}
+          className={`${inputBaseClass} transition-all duration-300 ease-in-out`}
         />
       );
 
@@ -33,7 +34,7 @@ function FormField({ field, value, onChange }) {
           minLength={field.minLength}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className={`${inputBaseClass} resize-none h-28`}
+          className={`${inputBaseClass} resize-none h-32 transition-all duration-300 ease-in-out`}
         />
       );
 
@@ -43,7 +44,7 @@ function FormField({ field, value, onChange }) {
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           required={field.required}
-          className={inputBaseClass}
+          className={`${inputBaseClass} transition-all duration-300 ease-in-out`}
         >
           <option value="">Select an option</option>
           {field.options?.map((option) => (
@@ -56,18 +57,17 @@ function FormField({ field, value, onChange }) {
 
     case 'radio':
       return (
-        <div className={labelGroupClass}>
+        <div className="mb-4 flex flex-col gap-2">
           {field.options?.map((option) => (
-            <label key={option.value} className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label key={option.value} className={checkboxRadioLabelClass}>
               <input
                 type="radio"
-                name={field.fieldId}
                 value={option.value}
                 checked={value === option.value}
                 onChange={(e) => onChange(e.target.value)}
-                className="accent-blue-500"
+                className="accent-blue-600"
               />
-              {option.label}
+              <span>{option.label}</span>
             </label>
           ))}
         </div>
@@ -75,9 +75,9 @@ function FormField({ field, value, onChange }) {
 
     case 'checkbox':
       return (
-        <div className={labelGroupClass}>
+        <div className="mb-4 flex flex-col gap-2">
           {field.options?.map((option) => (
-            <label key={option.value} className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label key={option.value} className={checkboxRadioLabelClass}>
               <input
                 type="checkbox"
                 value={option.value}
@@ -89,9 +89,9 @@ function FormField({ field, value, onChange }) {
                     onChange(value.filter((v) => v !== option.value));
                   }
                 }}
-                className="accent-blue-500"
+                className="accent-blue-600"
               />
-              {option.label}
+              <span>{option.label}</span>
             </label>
           ))}
         </div>
