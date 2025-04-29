@@ -16,44 +16,38 @@ function Login({ onLoginSuccess }) {
       onLoginSuccess(rollNumber);
     } catch (err) {
       if (err.response && err.response.status === 409) {
-        console.warn('User already exists. Fetching form...');
         try {
           const formData = await fetchForm(rollNumber);
-          console.log('Fetched form:', formData);
           onLoginSuccess(rollNumber);
         } catch (fetchErr) {
-          console.error('Failed to fetch form JSON:', fetchErr);
           setError('User exists but form could not be loaded.');
         }
       } else {
         setError('Login failed. Try again.');
-        console.error('Unexpected error:', err);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-12 h-12 border-4 border-blue-600 border-dashed rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-blue-300">
+        <div className="w-14 h-14 border-4 border-blue-600 border-dashed rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200 px-6 py-10 animate-fade-in">
-      <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md transition-transform duration-300 ease-in-out transform hover:scale-105">
-        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Student Login</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300 px-6 py-10 animate-fade-in">
+      <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md transform hover:scale-[1.02] transition duration-300">
+        <h2 className="text-3xl font-extrabold text-center text-blue-800 mb-8">Student Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="text"
             placeholder="Roll Number"
             value={rollNumber}
             onChange={(e) => setRollNumber(e.target.value)}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
+            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <input
             type="text"
@@ -61,12 +55,12 @@ function Login({ onLoginSuccess }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
+            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {error && <div className="text-red-500 text-sm font-medium text-center">{error}</div>}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-transform transform hover:scale-105"
           >
             Login
           </button>
