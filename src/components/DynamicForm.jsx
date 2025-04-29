@@ -1,35 +1,17 @@
-import React, { useState } from "react";
-import FormField from "./FormField";
+import React, { useState } from 'react';
+import FormField from './FormField';
 
 function DynamicForm({ formResponse }) {
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [formData, setFormData] = useState({});
 
-  const sections = formResponse.form.sections;
-  const currentSection = sections[currentSectionIndex];
+  const currentSection = formResponse.form.sections[currentSectionIndex];
 
   const handleFieldChange = (fieldId, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [fieldId]: value,
     }));
-  };
-
-  const validateSection = () => {
-    let isValid = true;
-    for (const field of currentSection.fields) {
-      const value = formData[field.fieldId];
-      if (field.required && (!value || value === "")) {
-        isValid = false;
-      }
-      if (field.minLength && value?.length < field.minLength) {
-        isValid = false;
-      }
-      if (field.maxLength && value?.length > field.maxLength) {
-        isValid = false;
-      }
-    }
-    return isValid;
   };
 
   const handleNext = () => {
@@ -41,53 +23,64 @@ function DynamicForm({ formResponse }) {
   };
 
   const handleSubmit = () => {
-    if (validateSection()) {
-      console.log("Collected Form Data: ", formData);
-      alert("Form submitted! Check console.");
-    } else {
-      alert("Please fix errors before submitting.");
-    }
+    console.log('Collected Form Data:', formData);
+    setFormData({});
+    setCurrentSectionIndex(0);
+  };
+
+  
+  const getSortedFields = (fields) => {
+    return [...fields].sort((a, b) => {
+      if (a.order !== undefined && b.order !== undefined) {
+        return a.order - b.order;
+      }
+      return a.label.localeCompare(b.label);
+    });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-4">{currentSection.title}</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 py-8">
+      <div className="bg-white w-full max-w-3xl p-8 rounded-2xl shadow-xl transition duration-500">
+        <h2 className="text-3xl font-semibold text-blue-700 mb-6 text-center animate-fade-in">
+          {currentSection.title}
+        </h2>
 
-        {currentSection.fields.map((field) => (
-          <div key={field.fieldId} className="mb-4">
-            <label className="block mb-1 font-semibold">{field.label}</label>
-            <FormField
-              field={field}
-              value={formData[field.fieldId]}
-              onChange={(value) => handleFieldChange(field.fieldId, value)}
-            />
-          </div>
-        ))}
+        <div className="space-y-5">
+          {getSortedFields(currentSection.fields).map((field) => (
+            <div key={field.fieldId} className="animate-fade-in-up">
+              <label className="block text-gray-700 font-medium mb-2">
+                {field.label}
+              </label>
+              <FormField
+                field={field}
+                value={formData[field.fieldId] || ''}
+                onChange={(value) => handleFieldChange(field.fieldId, value)}
+              />
+            </div>
+          ))}
+        </div>
 
-        <div className="flex justify-between mt-6">
-          {currentSectionIndex > 0 && (
+        <div className="flex justify-between mt-8">
+          {currentSectionIndex > 0 ? (
             <button
+              className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition hover:cursor-pointer"
               onClick={handlePrev}
-              className="bg-gray-400 text-white p-2 rounded"
             >
               Prev
             </button>
-          )}
-          {currentSectionIndex < sections.length - 1 ? (
+          ) : <div />}
+
+          {currentSectionIndex < formResponse.form.sections.length - 1 ? (
             <button
-              onClick={() => {
-                if (validateSection()) handleNext();
-                else alert("Please fill fields correctly.");
-              }}
-              className="bg-blue-600 text-white p-2 rounded ml-auto"
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition hover:cursor-pointer"
+              onClick={handleNext}
             >
               Next
             </button>
           ) : (
             <button
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition hover:cursor-pointer"
               onClick={handleSubmit}
-              className="bg-green-600 text-white p-2 rounded ml-auto"
             >
               Submit
             </button>
