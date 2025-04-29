@@ -11,7 +11,7 @@ function DynamicForm({ formResponse }) {
 
   const handleFieldChange = (fieldId, value) => {
     setFormData({ ...formData, [fieldId]: value });
-    setErrors({ ...errors, [fieldId]: null }); // clear error
+    setErrors({ ...errors, [fieldId]: null });
   };
 
   const validateSection = () => {
@@ -102,16 +102,18 @@ function DynamicForm({ formResponse }) {
       </div>
     );
   }
-  
 
   return (
-    <div className="p-8 max-w-3xl mx-auto bg-white shadow-xl rounded-lg">
-      <h2 className="text-3xl font-semibold mb-6 text-blue-600 text-center">
+    <div className="p-10 max-w-4xl mx-auto bg-white shadow-xl rounded-3xl">
+      <h2 className="text-4xl font-bold mb-10 text-blue-700 text-center">
         {currentSection.title}
       </h2>
       {currentSection.fields.map((field) => (
-        <div key={field.fieldId} className="mb-6">
-          <label className="block text-lg font-medium text-gray-800 mb-2">
+        <div
+          key={field.fieldId}
+          className="mb-8 bg-gray-50 p-5 rounded-xl shadow-sm"
+        >
+          <label className="block text-lg font-semibold text-gray-700 mb-2">
             {field.label}
           </label>
           <FormField
@@ -120,17 +122,17 @@ function DynamicForm({ formResponse }) {
             onChange={(value) => handleFieldChange(field.fieldId, value)}
           />
           {errors[field.fieldId] && (
-            <div className="text-red-500 text-sm mt-1">
+            <div className="text-red-500 text-sm mt-1 font-medium">
               {errors[field.fieldId]}
             </div>
           )}
         </div>
       ))}
 
-      <div className="flex justify-between mt-8">
+      <div className="flex justify-between mt-12">
         {currentSectionIndex > 0 ? (
           <button
-            className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition hover:cursor-pointer"
+            className="px-8 py-3 bg-gray-400 text-white rounded-xl hover:bg-gray-500 transition transform hover:scale-105"
             onClick={handlePrev}
           >
             Prev
@@ -141,14 +143,14 @@ function DynamicForm({ formResponse }) {
 
         {currentSectionIndex < formResponse.form.sections.length - 1 ? (
           <button
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition hover:cursor-pointer"
+            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition transform hover:scale-105"
             onClick={handleNext}
           >
             Next
           </button>
         ) : (
           <button
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition hover:cursor-pointer"
+            className="px-8 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition transform hover:scale-105"
             onClick={handleSubmit}
           >
             Submit

@@ -2,10 +2,10 @@ import React from 'react';
 
 function FormField({ field, value, onChange }) {
   const inputBaseClass =
-    "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition mb-4";
+    "w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300 ease-in-out";
 
   const checkboxRadioLabelClass =
-    "inline-flex items-center gap-2 text-gray-700 cursor-pointer mb-2";
+    "inline-flex items-center gap-3 text-gray-700 cursor-pointer mb-1";
 
   switch (field.type) {
     case 'text':
@@ -21,7 +21,7 @@ function FormField({ field, value, onChange }) {
           minLength={field.minLength}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className={`${inputBaseClass} transition-all duration-300 ease-in-out`}
+          className={inputBaseClass}
         />
       );
 
@@ -34,7 +34,7 @@ function FormField({ field, value, onChange }) {
           minLength={field.minLength}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className={`${inputBaseClass} resize-none h-32 transition-all duration-300 ease-in-out`}
+          className={`${inputBaseClass} resize-none h-32`}
         />
       );
 
@@ -44,7 +44,7 @@ function FormField({ field, value, onChange }) {
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           required={field.required}
-          className={`${inputBaseClass} transition-all duration-300 ease-in-out`}
+          className={inputBaseClass}
         >
           <option value="">Select an option</option>
           {field.options?.map((option) => (
@@ -65,9 +65,9 @@ function FormField({ field, value, onChange }) {
                 value={option.value}
                 checked={value === option.value}
                 onChange={(e) => onChange(e.target.value)}
-                className="accent-blue-600"
+                className="accent-blue-600 w-4 h-4"
               />
-              <span>{option.label}</span>
+              <span className="text-base">{option.label}</span>
             </label>
           ))}
         </div>
@@ -89,9 +89,9 @@ function FormField({ field, value, onChange }) {
                     onChange(value.filter((v) => v !== option.value));
                   }
                 }}
-                className="accent-blue-600"
+                className="accent-blue-600 w-4 h-4"
               />
-              <span>{option.label}</span>
+              <span className="text-base">{option.label}</span>
             </label>
           ))}
         </div>
